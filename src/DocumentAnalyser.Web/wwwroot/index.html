@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Document Analyser</title>
+    <link rel="stylesheet" href="site.css" />
+</head>
+<body>
+<header>
+    <h1>Document Analyser</h1>
+    <p class="subtitle">Multi-agent document analysis on Azure AI Foundry: Planner → Analyst ⇄ Reviewer → Evaluators</p>
+    <div id="connection" class="connection">Loading config…</div>
+</header>
+
+<main>
+    <section class="panel input">
+        <h2>1. Document</h2>
+        <label class="file">
+            Upload a file <span id="extensions" class="muted"></span>
+            <input type="file" id="file" />
+        </label>
+        <p class="muted or">…or paste text:</p>
+        <textarea id="documentText" rows="8" placeholder="Paste document text here"></textarea>
+
+        <h2>2. Instructions</h2>
+        <textarea id="instructions" rows="3" placeholder="e.g. Summarise the key risks in 5 bullet points">Summarise this document in 5 bullet points, then list any action items with owners.</textarea>
+
+        <details>
+            <summary>Options</summary>
+            <label>Max review rounds <input type="number" id="maxReviewRounds" min="0" max="5" value="2" /></label>
+            <label class="inline"><input type="checkbox" id="runEvaluation" checked /> Run evaluators after the agents finish</label>
+            <label>Expected answer (optional, enables the Completeness + Equivalence evaluators)
+                <textarea id="expectedAnswer" rows="3" placeholder="What a perfect answer would say"></textarea>
+            </label>
+        </details>
+
+        <details>
+            <summary>Agent instructions (edit to experiment, they apply to the next run)</summary>
+            <label>Planner <textarea id="plannerPrompt" rows="8"></textarea></label>
+            <label>Analyst <textarea id="analystPrompt" rows="8"></textarea></label>
+            <label>Reviewer <textarea id="reviewerPrompt" rows="8"></textarea></label>
+            <button type="button" id="resetPrompts" class="secondary">Reset to defaults from /Prompts</button>
+        </details>
+
+        <button id="run">Run agents</button>
+    </section>
+
+    <section class="panel output">
+        <h2>Agent timeline</h2>
+        <div id="timeline" class="timeline"><p class="muted">Run the agents to see each step here.</p></div>
+
+        <h2>Evaluation</h2>
+        <div id="evaluation"><p class="muted">Scores from the LLM-as-judge evaluators appear here.</p></div>
+
+        <h2>Final answer</h2>
+        <div id="final" class="final"><p class="muted">Nothing yet.</p></div>
+    </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
